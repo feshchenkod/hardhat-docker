@@ -45,9 +45,10 @@ docker run -d \
 nohup sleep $TIMEOUT &>/dev/null && docker stop $NAME &>/dev/null && docker rm $NAME &>/dev/null &
 
 echo
-echo "=======> https://${DOMAIN}/$NAME/ <======="
+echo "Access URL:"
+echo -e "=======> \033[4m\033[1mhttps://${DOMAIN}/$NAME/\033[0m\033[0m"
 
 echo
-echo "Auto remove after: $TIMEOUT. To manual remove:"
-echo "=======> docker stop $NAME && docker rm $NAME <======="
+echo -e "Auto remove after: \033[1m$TIMEOUT\033[0m. To manual remove:"
+echo "=======> docker stop $NAME && docker rm $NAME"
 echo
