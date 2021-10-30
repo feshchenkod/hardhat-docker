@@ -1,0 +1,42 @@
+version: "3.3"
+
+services:
+  traefic:
+    image: traefik
+    restart: always
+    container_name: "traefik"
+    env_file: .env
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.exposedbydefault=false"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=${EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--entrypoints.websecure.http.tls.certResolver=letsencrypt"
+      - "--entrypoints.websecure.http.tls.domains[0].main=${DOMAIN}"
+      - "--entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
+    ports:
+      - 8080:8080
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./letsencrypt:/letsencrypt
+
+  # whoami:
+  #   image: "traefik/whoami"
+  #   container_name: "whoami"
+  #   env_file: .env
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.whoami.service=whoami"
+  #     - "traefik.http.routers.whoami.rule=Host(`${DOMAIN}`) && Path(`/whoami/`)"
+  #     - "traefik.http.routers.whoami.entrypoints=websecure"
+  #     - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+  #     - "traefik.http.services.whoami.loadbalancer.server.port=80"
