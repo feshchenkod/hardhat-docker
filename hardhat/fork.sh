@@ -33,6 +33,7 @@ done
 docker run -d \
 --network hardhat_default $CACHE \
 -l "traefik.enable=true" \
+-l "traefik.http.middlewares.$NAME.headers.customrequestheaders.Access-Control-Allow-Origin=*" \
 -l "traefik.http.routers.$NAME.service=$NAME" \
 -l "traefik.http.routers.$NAME.rule=Host(\`${DOMAIN}\`) && Path(\`/$NAME/\`)" \
 -l "traefik.http.routers.$NAME.entrypoints=websecure" \
