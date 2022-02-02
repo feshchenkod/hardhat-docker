@@ -11,20 +11,22 @@ print_help () {
   echo "options:"
   echo "-b     Fork from block number (Default: latest, minus safety value - 5). Should be 2675000 at least."
   echo "-h     Print this Help."
-  echo "-n     Disable cache loading."  
+  echo "-d     Disable cache loading."
   echo "-t     Custom timeout (default: 2h)."
+  echo "-n     Custom container name (default: random uuid)."
   echo
-  echo "example: ./fork.sh -n -b 2675000 -t 30m"
+  echo "example: ./fork.sh -d -b 2675000 -t 30m"
   echo
   exit 0
 }
 
-while getopts 'nb:ht:' flag; do
+while getopts 'db:ht:n:' flag; do
   case "${flag}" in
-    n) CACHE= ;;
+    d) CACHE= ;;
     b) HEIGHT="--fork-block-number ${OPTARG}";;
     h) print_help ;;
     t) TIMEOUT="${OPTARG}" ;;
+    n) NAME="${OPTARG}" ;;
     *) print_help
        exit 1 ;;
   esac
@@ -48,6 +50,12 @@ nohup sleep $TIMEOUT &>/dev/null && docker stop $NAME &>/dev/null && docker rm $
 echo
 echo "Access URL:"
 echo -e "=======> \033[4m\033[1mhttps://${DOMAIN}/$NAME/\033[0m\033[0m"
+echo
+
+echo
+echo -e "Container logs:"
+echo "=======> docker logs -f --tail 100 $NAME"
+echo
 
 echo
 echo -e "Auto remove after: \033[1m$TIMEOUT\033[0m. To manual remove:"
