@@ -32,7 +32,7 @@ while getopts 'db:ht:n:' flag; do
   esac
 done
 
-docker run -d \
+docker run --rm -d \
 --network hardhat_default $CACHE \
 -l "traefik.enable=true" \
 -l "traefik.http.middlewares.$NAME.headers.customrequestheaders.Access-Control-Allow-Origin=*" \
@@ -41,23 +41,36 @@ docker run -d \
 -l "traefik.http.routers.$NAME.entrypoints=websecure" \
 -l "traefik.http.routers.$NAME.tls.certresolver=myresolver" \
 -l "traefik.http.services.$NAME.loadbalancer.server.port=8545" \
---name $NAME hardhat-node npx hardhat node \
+--name $NAME hardhat-node timeout $TIMEOUT npx hardhat node \
 --fork $DEFAULT_RPC $HEIGHT \
 1> /dev/null
 
-nohup sleep $TIMEOUT &>/dev/null && docker stop $NAME &>/dev/null && docker rm $NAME &>/dev/null &
+docker run --rm --name=explorer-$NAME -tid \
+-e RPC=https://${DOMAIN}/$NAME/ \
+-e SUBDIR=explorer-$NAME \
+-l "traefik.enable=true" \
+-l "traefik.http.routers.explorer-$NAME.service=explorer-$NAME" \
+-l "traefik.http.routers.explorer-$NAME.rule=Host(\`${DOMAIN}\`) && PathPrefix(\`/explorer-$NAME\`)" \
+-l "traefik.http.routers.explorer-$NAME.entrypoints=websecure" \
+-l "traefik.http.routers.explorer-$NAME.tls.certresolver=myresolver" \
+-l "traefik.http.services.explorer-$NAME.loadbalancer.server.port=8000" \
+etherparty timeout $TIMEOUT ./docker-entrypoint.sh 1> /dev/null
 
 echo
-echo "Access URL:"
+echo "RPC URL:"
 echo -e "=======> \033[4m\033[1mhttps://${DOMAIN}/$NAME/\033[0m\033[0m"
+
 echo
+echo "Explorer URL:"
+echo -e "=======> \033[4m\033[1mhttps://${DOMAIN}/explorer-$NAME/\033[0m\033[0m"
 
 echo
 echo -e "Container logs:"
 echo "=======> docker logs -f --tail 100 $NAME"
-echo
+echo "=======> docker logs -f --tail 100 explorer-$NAME"
 
 echo
 echo -e "Auto remove after: \033[1m$TIMEOUT\033[0m. To manual remove:"
-echo "=======> docker stop $NAME && docker rm $NAME"
+echo "=======> docker stop $NAME; docker stop explorer-$NAME"
+
 echo
