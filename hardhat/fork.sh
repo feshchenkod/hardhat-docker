@@ -3,7 +3,6 @@
 source .env
 CACHE="-v hardhat-cache:/app/cache"
 TIMEOUT=2h
-HEIGHT=
 NAME=`uuidgen`
 
 print_help () {
@@ -14,19 +13,21 @@ print_help () {
   echo "-d     Disable cache loading."
   echo "-t     Custom timeout (default: 2h)."
   echo "-n     Custom container name (default: random uuid)."
+  echo "-i     Set mining interval in ms (default: none)."
   echo
-  echo "example: ./fork.sh -d -b 2675000 -t 30m"
+  echo "example: ./fork.sh -d -b 2675000 -t 30m -i 5000"
   echo
   exit 0
 }
 
-while getopts 'db:ht:n:' flag; do
+while getopts 'db:ht:n:i:' flag; do
   case "${flag}" in
     d) CACHE= ;;
-    b) HEIGHT="--fork-block-number ${OPTARG}";;
+    b) HEIGHT="${OPTARG}";;
     h) print_help ;;
     t) TIMEOUT="${OPTARG}" ;;
     n) NAME="${OPTARG}" ;;
+    i) INTERVAL="${OPTARG}" ;;
     *) print_help
        exit 1 ;;
   esac
@@ -34,6 +35,9 @@ done
 
 docker run --rm -d \
 --network hardhat_default $CACHE \
+-e RPC_URL=$DEFAULT_RPC \
+-e HEIGHT=$HEIGHT \
+-e INTERVAL=$INTERVAL \
 -l "traefik.enable=true" \
 -l "traefik.http.middlewares.$NAME.headers.customrequestheaders.Access-Control-Allow-Origin=*" \
 -l "traefik.http.routers.$NAME.service=$NAME" \
@@ -41,8 +45,7 @@ docker run --rm -d \
 -l "traefik.http.routers.$NAME.entrypoints=websecure" \
 -l "traefik.http.routers.$NAME.tls.certresolver=myresolver" \
 -l "traefik.http.services.$NAME.loadbalancer.server.port=8545" \
---name $NAME hardhat-node timeout $TIMEOUT npx hardhat node \
---fork $DEFAULT_RPC $HEIGHT \
+--name $NAME hardhat-node timeout $TIMEOUT ./docker-entrypoint.sh \
 1> /dev/null
 
 docker run --rm --name=explorer-$NAME -tid \
