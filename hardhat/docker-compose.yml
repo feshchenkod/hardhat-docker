@@ -29,15 +29,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./letsencrypt:/letsencrypt
 
-  explorer:
-    image: "expedition"
-    container_name: "explorer"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.explorer.service=explorer"
-      - "traefik.http.routers.explorer.rule=Host(`${DOMAIN}`)"
-      - "traefik.http.routers.explorer.middlewares=explorer-middlewares"
-      - "traefik.http.middlewares.explorer-middlewares.stripprefix.prefixes=/explorer"
-      - "traefik.http.routers.explorer.entrypoints=websecure"
-      - "traefik.http.routers.explorer.tls.certresolver=myresolver"
-      - "traefik.http.services.explorer.loadbalancer.server.port=80"
+  # expedition:
+  #   image: "expedition"
+  #   container_name: "expedition"
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.expedition.service=expedition"
+  #     - "traefik.http.routers.expedition.rule=Host(`${DOMAIN}`)"
+  #     - "traefik.http.routers.expedition.middlewares=expedition-middlewares"
+  #     - "traefik.http.middlewares.expedition-middlewares.stripprefix.prefixes=/expedition"
+  #     - "traefik.http.routers.expedition.entrypoints=websecure"
+  #     - "traefik.http.routers.expedition.tls.certresolver=myresolver"
+  #     - "traefik.http.services.expedition.loadbalancer.server.port=80"
