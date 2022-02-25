@@ -33,6 +33,9 @@ while getopts 'db:ht:n:i:' flag; do
   esac
 done
 
+docker stop $NAME &> /dev/null && echo -e "Killed a container with the same name: \033[1m$NAME\033[0m"
+docker stop explorer-$NAME &> /dev/null && echo -e "Killed a container with the same name: \033[1mexplorer-$NAME\033[0m"
+
 docker run --rm -d \
 --network hardhat_default $CACHE \
 -e RPC_URL=$DEFAULT_RPC \
@@ -71,6 +74,10 @@ echo
 echo -e "Container logs:"
 echo "=======> docker logs -f --tail 100 $NAME"
 echo "=======> docker logs -f --tail 100 explorer-$NAME"
+
+echo
+echo -e "HTTP requests capture:"
+echo "=======> docker exec -it $NAME tcpflow -p -c port 8545"
 
 echo
 echo -e "Auto remove after: \033[1m$TIMEOUT\033[0m. To manual remove:"
