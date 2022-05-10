@@ -3,6 +3,7 @@
 ## build hardhat:
 ```bash
 docker build -t hardhat-node .
+docker build -t anvil-node . -f Dockerfile.anvil
 docker volume create hardhat-cache
 ```
 

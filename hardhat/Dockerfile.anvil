@@ -1,0 +1,15 @@
+FROM rust:latest
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y git make tcpflow \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/foundry-rs/foundry
+
+RUN sed -i 's/let socket = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), port);/let socket = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), port);/' foundry/anvil/src/lib.rs
+RUN cd foundry && cargo install --path ./anvil --bins --locked --force
+
+EXPOSE 8545
+
+CMD ["anvil"]
