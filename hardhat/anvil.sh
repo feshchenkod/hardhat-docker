@@ -17,10 +17,10 @@ print_help () {
   echo "-n     Custom container name (default: random uuid)."
   echo "-i     Set mining interval in seconds (default: none)."
   echo
-  echo "example 1: ./fork.sh -t 2d -n my-fork"
+  echo "example 1: ./anvil.sh -t 2d -n my-fork"
   echo "fork will be removed after 2 days, access url https://hardhat.ztake.org/my-fork/"
   echo
-  echo "example 2: ./fork.sh -d -b 2675000 -t 30m -i 5000"
+  echo "example 2: ./anvil.sh -d -b 2675000 -t 30m -i 6"
   echo
   exit 0
 }
