@@ -21,6 +21,8 @@ services:
       - "--entrypoints.websecure.http.tls.certResolver=letsencrypt"
       - "--entrypoints.websecure.http.tls.domains[0].main=${DOMAIN}"
       - "--entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
+      - "--accesslog=true"
+      - "--accesslog.format=json"
     ports:
       - 8080:8080
       - 80:80
