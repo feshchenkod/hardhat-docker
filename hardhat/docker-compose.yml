@@ -21,6 +21,8 @@ services:
       - "--entrypoints.websecure.http.tls.certResolver=letsencrypt"
       - "--entrypoints.websecure.http.tls.domains[0].main=${DOMAIN}"
       - "--entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
+      - "--entryPoints.name.transport.respondingTimeouts.readTimeout=60"
+      - "--entryPoints.name.transport.respondingTimeouts.writeTimeout=60"
       - "--accesslog=true"
       - "--accesslog.format=json"
     ports:
@@ -30,16 +32,3 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./letsencrypt:/letsencrypt
-
-  # expedition:
-  #   image: "expedition"
-  #   container_name: "expedition"
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.expedition.service=expedition"
-  #     - "traefik.http.routers.expedition.rule=Host(`${DOMAIN}`)"
-  #     - "traefik.http.routers.expedition.middlewares=expedition-middlewares"
-  #     - "traefik.http.middlewares.expedition-middlewares.stripprefix.prefixes=/expedition"
-  #     - "traefik.http.routers.expedition.entrypoints=websecure"
-  #     - "traefik.http.routers.expedition.tls.certresolver=myresolver"
-  #     - "traefik.http.services.expedition.loadbalancer.server.port=80"

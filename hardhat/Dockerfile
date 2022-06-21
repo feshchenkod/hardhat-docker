@@ -13,6 +13,4 @@ RUN apt-get update && apt-get install -y \
 COPY ./docker-entrypoint.sh docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 
-EXPOSE 8545
-
 CMD ["./docker-entrypoint.sh"]
