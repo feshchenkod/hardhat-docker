@@ -15,10 +15,10 @@ print_help () {
   echo "-d     Disable caching."
   echo "-t     Custom timeout (default: 2h)."
   echo "-n     Custom container name (default: random uuid)."
-  echo "-i     Set mining interval in seconds (default: none)."
+  echo "-i     Set mining interval in seconds (default: none; min: 5)."
   echo
   echo "example 1: ./anvil.sh -t 2d -n my-fork"
-  echo "fork will be removed after 2 days, access url https://hardhat.ztake.org/my-fork/"
+  echo "fork will be removed after 2 days, access url https://"${DOMAIN}"/my-fork/"
   echo
   echo "example 2: ./anvil.sh -d -b 2675000 -t 30m -i 6"
   echo
@@ -52,7 +52,7 @@ docker run --rm -d \
 -l "traefik.http.routers.$NAME.entrypoints=websecure" \
 -l "traefik.http.routers.$NAME.tls.certresolver=myresolver" \
 -l "traefik.http.services.$NAME.loadbalancer.server.port=8545" \
---name $NAME anvil-node "timeout $TIMEOUT anvil --allow-origin=* --host 0.0.0.0 -f $DEFAULT_RPC $HEIGHT $INTERVAL $CACHE" \
+--name $NAME anvil-node timeout $TIMEOUT anvil --allow-origin=* --host 0.0.0.0 -f $DEFAULT_RPC $HEIGHT $INTERVAL $CACHE \
 1> /dev/null
 
 docker run --rm --name=explorer-$NAME -tid \

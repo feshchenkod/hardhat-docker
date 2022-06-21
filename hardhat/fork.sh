@@ -16,7 +16,7 @@ print_help () {
   echo "-i     Set mining interval in ms (default: none)."
   echo
   echo "example 1: ./fork.sh -t 2d -n my-fork"
-  echo "fork will be removed after 2 days, access url https://hardhat.ztake.org/my-fork/"
+  echo "fork will be removed after 2 days, access url https://"${DOMAIN}"/my-fork/"
   echo
   echo "example 2: ./fork.sh -d -b 2675000 -t 30m -i 5000"
   echo
