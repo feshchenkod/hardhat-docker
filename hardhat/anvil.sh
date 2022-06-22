@@ -52,7 +52,7 @@ docker run --rm -d \
 -l "traefik.http.routers.$NAME.entrypoints=websecure" \
 -l "traefik.http.routers.$NAME.tls.certresolver=myresolver" \
 -l "traefik.http.services.$NAME.loadbalancer.server.port=8545" \
---name $NAME anvil-node timeout $TIMEOUT anvil --allow-origin=* --host 0.0.0.0 -f $DEFAULT_RPC $HEIGHT $INTERVAL $CACHE \
+--name $NAME anvil-node timeout $TIMEOUT anvil --allow-origin=* --host 0.0.0.0 -f $DEFAULT_RPC $HEIGHT $INTERVAL $CACHE --block-base-fee-per-gas 1000000000 --block-gas-limit 50000000 \
 1> /dev/null
 
 docker run --rm --name=explorer-$NAME -tid \
