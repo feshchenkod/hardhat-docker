@@ -1,0 +1,6 @@
+EMAIL=e@ma.il
+DOMAIN=do.main
+DEFAULT_RPC=https://rpc.url/
+TENDERLY_ACCESS_KEY=
+TENDERLY_PROJECT=project
+TENDERLY_USER=username

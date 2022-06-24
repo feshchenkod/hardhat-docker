@@ -1,0 +1,13 @@
+FROM nginx:latest
+
+RUN apt-get update && apt-get install -y \
+  tcpflow \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /etc/nginx/templates/
+COPY proxy.conf /etc/nginx/templates/default.conf.template
+
+COPY proxy-entryporint.sh docker-entrypoint.sh
+RUN chmod +x docker-entrypoint.sh
+
+CMD ["./docker-entrypoint.sh"]
