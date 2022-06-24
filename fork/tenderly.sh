@@ -16,7 +16,7 @@ print_help () {
   echo "-t     Custom timeout (default: 2h)."
   echo "-n     Custom container name (default: random uuid)."
   echo
-  echo "example 1: ./fork.sh -t 2d -n my-fork -c bsc"
+  echo "example 1: ./tenderly.sh -t 2d -n my-fork -c bsc"
   echo "fork will be removed after 2 days, access url https://"${DOMAIN}"/my-fork/"
   echo
   exit 0
