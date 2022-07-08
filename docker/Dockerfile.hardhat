@@ -1,5 +1,7 @@
 FROM node:14
 
+LABEL org.opencontainers.image.source https://github.com/feshchenkod/hardhat-docker
+
 WORKDIR /app
 
 RUN yarn init -y && \
