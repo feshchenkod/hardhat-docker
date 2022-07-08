@@ -31,11 +31,15 @@ jobs:
           images: |
             ${ }}
 
+      - name: check path
+        run: ls -l
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
+        working-directory: ./docker/
         with:
-          context: ./docker/Dockerfile.hardhat
+          context: Dockerfile.hardhat
           push: true
           tags: ${{ env.IMAGE_TAG }}:${{ github.sha }},${{ env.IMAGE_TAG }}:latest
           labels: ${{ steps.meta.outputs.labels }}
