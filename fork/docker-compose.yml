@@ -21,10 +21,16 @@ services:
       - "--entrypoints.websecure.http.tls.certResolver=letsencrypt"
       - "--entrypoints.websecure.http.tls.domains[0].main=${DOMAIN}"
       - "--entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
-      - "--entryPoints.name.transport.respondingTimeouts.readTimeout=60"
-      - "--entryPoints.name.transport.respondingTimeouts.writeTimeout=60"
+      - "--entryPoints.name.transport.respondingTimeouts.readTimeout=300"
+      - "--entryPoints.name.transport.respondingTimeouts.writeTimeout=300"
+      - "--entryPoints.name.transport.respondingTimeouts.idleTimeout=300"
+      - "--serversTransport.forwardingTimeouts.dialTimeout=300s"
+      - "--serversTransport.forwardingTimeouts.idleConnTimeout=300s"
+      - "--serverstransport.maxidleconnsperhost=-1"
       - "--accesslog=true"
       - "--accesslog.format=json"
+      #- "--accesslog.filters.statuscodes=502"
+      #- "--log.level=DEBUG"
     ports:
       - 8080:8080
       - 80:80
