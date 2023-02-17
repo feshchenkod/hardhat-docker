@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./docker
-          file: Dockerfile.hardhat
+          file: ./docker/Dockerfile.hardhat
           push: true
           tags: ${{ env.IMAGE_TAG }}:${{ github.sha }},${{ env.IMAGE_TAG }}:latest
           labels: ${{ steps.meta.outputs.labels }}
