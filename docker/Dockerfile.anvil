@@ -1,4 +1,4 @@
-FROM ghcr.io/foundry-rs/foundry:nightly as source
+FROM ghcr.io/foundry-rs/foundry:nightly AS source
 
 FROM debian:stable
 RUN apt-get update && apt-get install -y \

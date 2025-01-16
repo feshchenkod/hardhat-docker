@@ -1,12 +1,12 @@
 FROM node:18
 
-LABEL org.opencontainers.image.source https://github.com/feshchenkod/hardhat-docker
+LABEL org.opencontainers.image.source=https://github.com/feshchenkod/hardhat-docker
 
 WORKDIR /app
 
 RUN yarn init -y && \
-    yarn add hardhat && \
-    npm install --save-dev @nomiclabs/hardhat-ganache
+  yarn add hardhat && \
+  npm install --save-dev @nomiclabs/hardhat-ganache
 
 RUN apt-get update && apt-get install -y \
   tcpflow \
