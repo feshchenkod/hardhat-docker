@@ -1,18 +1,20 @@
-FROM node:20
+FROM node:22
 
 LABEL org.opencontainers.image.source=https://github.com/feshchenkod/hardhat-docker
 
 WORKDIR /app
 
-RUN yarn init -y && \
-  yarn add hardhat && \
-  npm install --save-dev @nomiclabs/hardhat-ganache
-
 RUN apt-get update && apt-get install -y \
   tcpflow \
   && rm -rf /var/lib/apt/lists/*
 
-COPY ./docker-entrypoint.sh docker-entrypoint.sh
+RUN npm init -y && \
+  npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox-viem && \
+  npm pkg set type="module"
+
+COPY ./hardhat/hardhat.config.ts hardhat.config.ts
+
+COPY ./hardhat/docker-entrypoint.sh docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 
 CMD ["./docker-entrypoint.sh"]
