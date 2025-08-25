@@ -1,10 +1,10 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
-import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
+import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
 import { configVariable } from "hardhat/config";
 
 const config: HardhatUserConfig = {
-  plugins: [hardhatToolboxViemPlugin],
+  plugins: [hardhatToolboxMochaEthersPlugin],
   solidity: {
     profiles: {
       default: {
@@ -22,11 +22,14 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    hardhat: {
+      type: 'edr-simulated',
+      blockGasLimit: 1000000000,
+      initialBaseFeePerGas: 50000000,
+    },
     hardhatMainnet: {
       type: "edr-simulated",
       chainType: "l1",
-      blockGasLimit: 1000000000,
-      initialBaseFeePerGas: 50000000,
     },
     hardhatOp: {
       type: "edr-simulated",
