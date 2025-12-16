@@ -8,10 +8,12 @@ RUN apt-get update && apt-get install -y \
   tcpflow \
   && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -d hardhat && \
+RUN npm install -d hardhat@^3.1.0 && \
   npm pkg set type="module" && \
-  npm install --save-dev @nomicfoundation/hardhat-toolbox-mocha-ethers@^3.0.0 \
-  @nomicfoundation/hardhat-ignition@^3.0.0 \
+  npm install --save-dev \
+  @nomicfoundation/hardhat-toolbox-mocha-ethers@^3.0.2 \
+  @nomicfoundation/hardhat-ethers@^4.0.2 \
+  @nomicfoundation/hardhat-ignition@^3.0.6 \
   @types/chai@^4.2.0 \
   @types/chai-as-promised@^8.0.1 \
   @types/mocha@>=10.0.10 \

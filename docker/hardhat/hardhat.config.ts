@@ -26,6 +26,9 @@ const config: HardhatUserConfig = {
       type: 'edr-simulated',
       blockGasLimit: 1000000000,
       initialBaseFeePerGas: 50000000,
+      forking:{
+        url: configVariable("RPC_URL"),
+      },
     },
     hardhatMainnet: {
       type: "edr-simulated",
